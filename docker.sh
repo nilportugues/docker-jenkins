@@ -4,7 +4,7 @@ SHARED='./docker-compose.yml'
 
 case "$1" in
     start)
-        docker-compose -f $SHARED start;
+        docker-compose -f $SHARED up -d;
         ;;
     stop)
         docker-compose -f $SHARED stop;
