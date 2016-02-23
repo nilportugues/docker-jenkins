@@ -2,6 +2,8 @@ jenkins:
   container_name: jenkins
   hostname: jenkins
   build: ./files
+  environment:
+    JAVA_OPTS: "-Djava.awt.headless=true"  
   ports:
     - 8080:8080
     - 50000:50000
