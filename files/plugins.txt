@@ -1,0 +1,12 @@
+postbuild-task:1.8
+postbuildscript:0.17
+jobgenerator:1.22
+disable-failed-job:1.15
+greenballs:1.15
+s3:0.8
+docker-plugin:0.16.0
+diskcheck:0.26
+timestamper:1.7.4
+build-pipeline-plugin:1.4.9
+naginator:1.16.1
+git:2.4.2
