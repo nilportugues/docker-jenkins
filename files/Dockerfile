@@ -164,7 +164,7 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install snmp php7.0 \
     php-memcached
 
 RUN sudo pecl install mongodb
-RUN echo "extension=mongodb.so" >> /etc/php/7.0/cli/conf.d/20-mongodb.ini
+RUN echo "extension=mongodb.so" > /etc/php/7.0/cli/conf.d/20-mongodb.ini
 
 ###########################################################################################################
 # SQL LITE
