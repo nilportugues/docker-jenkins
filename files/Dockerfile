@@ -28,22 +28,24 @@ RUN sudo apt-get install -y oracle-java8-set-default
 # JENKINS
 ###########################################################################################################
 
-ENV JENKINS_HOME /var/jenkins_home
+ENV JENKINS_HOME /home/jenkins
 ENV JENKINS_SLAVE_AGENT_PORT 50000
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container, 
 # ensure you use the same uid
-RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins
+RUN mkdir -p /home/jenkins
+RUN useradd -c "jenkins" jenkins -u 1000 -s /bin/bash -d "/home/jenkins"
+RUN /bin/echo -e "jenkins\njenkins" | passwd jenkins
 
 # Jenkins home directory is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
-VOLUME /var/jenkins_home
-RUN echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle/bin" >> /var/jenkins_home/.bsharc
-RUN echo "export JAVA_HOME" >> /var/jenkins_home/.bsharc
-RUN echo 'PATH=$PATH:$JAVA_HOME' >> /var/jenkins_home/.bsharc
-RUN echo "export PATH" >> /var/jenkins_home/.bsharc
-RUN chown jenkins -Rf /var/jenkins_home/
+
+RUN echo "JAVA_HOME=/usr/lib/jvm/java-8-oracle/bin" >> /home/jenkins/.bsharc
+RUN echo "export JAVA_HOME" >> /home/jenkins/.bsharc
+RUN echo 'PATH=$PATH:$JAVA_HOME' >> /home/jenkins/.bsharc
+RUN echo "export PATH" >> /home/jenkins/.bsharc
+RUN chown jenkins -Rf /home/jenkins/
 
 # `/usr/share/jenkins/ref/` contains all reference configuration we want 
 # to set on a fresh new installation. Use it to bundle additional plugins 
@@ -52,11 +54,7 @@ RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 ENV TINI_SHA 066ad710107dc7ee05d3aa6e4974f01dc98f3888
 
-# Use tini as subreaper in Docker container to adopt zombie processes 
-RUN curl -fL https://github.com/krallin/tini/releases/download/v0.5.0/tini-static -o /bin/tini && chmod +x /bin/tini \
-  && echo "$TINI_SHA /bin/tini" | sha1sum -c -
 
-COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
 ENV JENKINS_VERSION 1.642.1
 ENV JENKINS_SHA 6a0213256670a00610a3e09203850a0fcf1a688e
@@ -85,10 +83,21 @@ RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
 
 COPY jenkins.sh /usr/local/bin/jenkins.sh
 RUN chmod +x /usr/local/bin/jenkins.sh
-RUN chown -Rf jenkins /var/jenkins_home/
-RUN chmod -Rf 777 /var/jenkins_home/
+RUN chown -Rf jenkins /home/jenkins/
+RUN chmod -Rf 777 /home/jenkins/
 
-
+###########################################################################################################
+# GENERATE A SSH KEY
+###########################################################################################################
+RUN mkdir -p /home/jenkins/.ssh/ && \
+    cd /home/jenkins/.ssh/ && \
+    ssh-keygen -t rsa -b 4096 -C '' -f /home/jenkins/.ssh/id_rsa && \
+    ssh-agent /bin/bash && eval `ssh-agent -s` && \
+    ssh-add /home/jenkins/.ssh/id_rsa && \
+    ls -lha /home/jenkins/ && \
+    cat /home/jenkins/.ssh/id_rsa.pub && \
+    echo "StrictHostKeyChecking no" >>  /home/jenkins/.ssh/config && \
+    echo "UserKnownHostsFile /dev/null" >>  /home/jenkins/.ssh/config
 
 ###########################################################################################################
 # NODEJS
@@ -185,8 +194,8 @@ RUN ansible-galaxy install --force carlosbuenosvinos.ansistrano-deploy carlosbue
 RUN adduser --disabled-password --gecos '' ansistrano
 RUN adduser ansistrano sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN mkdir -p /var/jenkins_home.ssh
-RUN cd /var/jenkins_home.ssh/ && ssh-keygen -t rsa -b 4096 -C '' -f /var/jenkins_home.ssh/id_rsa
+
+
 
 ###########################################################################################################
 # CHANGE TO JENKINS USER

@@ -38,3 +38,13 @@ ssh-agent:1.9
 role-strategy:2.2.0
 git-changelog:1.7
 ```
+
+
+## Jenkins SSH Key `id_rsa.pub`
+
+
+Output the contents by issuing `cat ./jenkins_home/.ssh/id_rsa.pub`. This has to be done from your machine. 
+
+## Remote machines Password-less SSH
+
+For each machine, you'll have to pass your public id_rsa

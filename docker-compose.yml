@@ -1,11 +1,11 @@
 jenkins:
-  container_name: jenkins
-  hostname: jenkins
+  container_name: jenkins_
+  hostname: jenkins_
   build: ./files
   environment:
-    JAVA_OPTS: "-Djava.awt.headless=true"  
+    JAVA_OPTS: "-Djava.awt.headless=true"
   ports:
     - 8080:8080
     - 50000:50000
   volumes:
-    - ./jenkins_home:/var/jenkins_home
+    - ./jenkins_home:/home/jenkins
