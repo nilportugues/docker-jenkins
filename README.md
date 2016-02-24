@@ -55,8 +55,7 @@ This has to be done from your machine.
 For each machine, you'll have to pass your public id_rsa.pub. This should be done with a command that should be along the lines of:
 
 ```
-docker run -it dockerjenkins_jenkins \ 
-bash -c  "cat ./home/jenkins/.ssh/id_rsa.pub | ssh -L user@host -p22 'cat >> ./.ssh/authorized_keys'"
+docker run -it dockerjenkins_jenkins bash -c  "cat ./home/jenkins/.ssh/id_rsa.pub | ssh user@host -p22 'cat >> ./.ssh/authorized_keys'"
 ```
 
 
