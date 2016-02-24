@@ -58,3 +58,26 @@ For each machine, you'll have to pass your public id_rsa.pub. This should be don
 docker run -it dockerjenkins_jenkins \ 
 bash -c  "cat ./home/jenkins/.ssh/id_rsa.pub | ssh -L user@host -p22 'cat >> ./.ssh/authorized_keys'"
 ```
+
+
+
+# Contribute
+
+Contributions to the package are always welcome!
+
+* Report any bugs or issues you find on the [issue tracker](https://github.com/nilportugues/docker-jenkins/issues/new).
+* You can grab the source code at the package's [Git repository](https://github.com/nilportugues/docker-jenkins).
+
+
+# Support
+
+Get in touch with me using one of the following means:
+
+ - Emailing me at <contact@nilportugues.com>
+ - Opening an [Issue](https://github.com/nilportugues/docker-jenkins/issues/new)
+
+
+# Authors
+
+* [Nil Portugués Calderó](http://nilportugues.com)
+* [The Community Contributors](https://github.com/nilportugues/docker-jenkins/graphs/contributors)
