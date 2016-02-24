@@ -43,8 +43,13 @@ git-changelog:1.7
 ## Jenkins SSH Key `id_rsa.pub`
 
 
-Output the contents by issuing `cat ./jenkins_home/.ssh/id_rsa.pub`. This has to be done from your machine. 
+Output the contents by issuing: 
 
-## Remote machines Password-less SSH
+```
+docker run -it cijenkins_jenkins bash -c "cat /home/jenkins/.ssh/id_rsa.pub" 
+```
+This has to be done from your machine. 
+
+## Password-less SSH for remote machines
 
 For each machine, you'll have to pass your public id_rsa

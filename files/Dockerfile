@@ -37,6 +37,7 @@ ENV JENKINS_SLAVE_AGENT_PORT 50000
 RUN mkdir -p /home/jenkins
 RUN useradd -c "jenkins" jenkins -u 1000 -s /bin/bash -d "/home/jenkins"
 RUN /bin/echo -e "jenkins\njenkins" | passwd jenkins
+RUN adduser jenkins sudo
 
 # Jenkins home directory is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
@@ -51,9 +52,6 @@ RUN chown jenkins -Rf /home/jenkins/
 # to set on a fresh new installation. Use it to bundle additional plugins 
 # or config file with your custom jenkins Docker image.
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
-
-ENV TINI_SHA 066ad710107dc7ee05d3aa6e4974f01dc98f3888
-
 
 
 ENV JENKINS_VERSION 1.642.1
@@ -92,12 +90,11 @@ RUN chmod -Rf 777 /home/jenkins/
 RUN mkdir -p /home/jenkins/.ssh/ && \
     cd /home/jenkins/.ssh/ && \
     ssh-keygen -t rsa -b 4096 -C '' -f /home/jenkins/.ssh/id_rsa && \
-    ssh-agent /bin/bash && eval `ssh-agent -s` && \
-    ssh-add /home/jenkins/.ssh/id_rsa && \
-    ls -lha /home/jenkins/ && \
-    cat /home/jenkins/.ssh/id_rsa.pub && \
     echo "StrictHostKeyChecking no" >>  /home/jenkins/.ssh/config && \
-    echo "UserKnownHostsFile /dev/null" >>  /home/jenkins/.ssh/config
+    echo "UserKnownHostsFile /dev/null" >>  /home/jenkins/.ssh/config &&\
+    chown -Rf jenkins:jenkins /home/jenkins/ && \
+    ssh-agent /bin/bash && eval "$(ssh-agent -s)" && \
+    ssh-add /home/jenkins/.ssh/id_rsa
 
 ###########################################################################################################
 # NODEJS
