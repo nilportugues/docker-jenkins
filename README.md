@@ -52,4 +52,9 @@ This has to be done from your machine.
 
 ## Password-less SSH for remote machines
 
-For each machine, you'll have to pass your public id_rsa
+For each machine, you'll have to pass your public id_rsa.pub. This should be done with a command that should be along the lines of:
+
+```
+docker run -it cijenkins_jenkins \ 
+bash -c  "cat ./home/jenkins/.ssh/id_rsa.pub | ssh remote_user:remote_password@remote_host -p 22 'cat >> ./.ssh/authorized_keys'"
+```
