@@ -1,4 +1,5 @@
 #Jenkins Docker 
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://paypal.me/nilportugues)
 
 Contains:
 
