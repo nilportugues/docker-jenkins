@@ -134,7 +134,7 @@ RUN chown -Rf jenkins /usr/local/lib/node_modules
 ###########################################################################################################
 
 RUN apt-get install -y language-pack-en-base
-RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php-7.0
+RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install snmp php7.0 \
     php7.0-bz2  \
@@ -154,7 +154,6 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install snmp php7.0 \
     php7.0-odbc  \
     php7.0-opcache  \
     php7.0-pgsql  \
-    php7.0-phpdbg  \
     php7.0-pspell  \
     php7.0-readline  \
     php7.0-recode  \
