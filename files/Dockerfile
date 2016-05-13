@@ -138,6 +138,7 @@ RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install snmp php7.0 \
     php7.0-bz2  \
+    php7.0-mbstring \
     php7.0-cli  \
     php7.0-common  \
     php7.0-curl  \
