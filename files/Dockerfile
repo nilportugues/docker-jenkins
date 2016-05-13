@@ -1,7 +1,7 @@
-FROM ubuntu:latest
+FROM ubuntu:14.04
 
-RUN apt-get install -y software-properties-common
 RUN apt-get update -y
+RUN apt-get install -y software-properties-common
 RUN apt-get install -y openssl openssh-client tar xz-utils wget git curl zip bzip2 
 RUN rm -rf /var/lib/apt/lists/*
 
